@@ -1,0 +1,16 @@
+[
+	{
+		"HostName": "db-1",
+		"DNSName": "db.internal",
+		"IPAddress": "192.168.0.1",
+		"ServicesRefs": [ "database", "logging" ]
+	},
+	{
+		"HostName": "web-1",
+		"ServicesRefs": [ "web" ]
+	},
+	{
+		"HostName": "svc-1",
+		"ServicesRefs": [ "service-a" ]
+	}
+]

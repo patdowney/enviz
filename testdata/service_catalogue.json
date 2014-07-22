@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "database",
+    "Port": 5432
+  },
+  {
+    "Name": "service-a",
+    "Port": 80,
+    "ServiceRefs": ["database", "logging"]
+  },
+  {
+    "Name": "logging",
+    "Port": 9200
+  },
+  {
+    "Name": "web",
+    "Port": 443,
+    "ServiceRefs": ["service-a", "logging"]
+  }
+]
