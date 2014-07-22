@@ -1,73 +1,76 @@
 package graphviz
 
-type Relation struct {
-	LeftID     string
-	RightID    string
-	Properties Properties
-}
+import "fmt"
 
-func (r *Relation) GraphViz() string {
-	const graphTemplate = `{{.LeftID}} -> {{.RightID}} [{{ range $n, $v :=     .Properties}} {{$n}}="{{$v}}"{{end}} ];`
-
-	return RenderTemplate(graphTemplate, r)
-}
-
-func NewRelation(leftID string, rightID string) *Relation {
-	r := Relation{
-		LeftID:     leftID,
-		RightID:    rightID,
-		Properties: make(Properties)}
-
-	return &r
+type GraphVizGraph interface {
+	Graph() *GraphBase
 }
 
 type Graph interface {
 	AddAttribute(*Attr)
-	AddNode(*Node)
-	AddSubGraph(Graph)
+	AddNode(GraphVizNode)
+	AddSubGraph(GraphVizGraph)
 	AddRelation(*Relation)
 	GraphViz() string
 }
 
 type GraphBase struct {
 	Type       string
-	Name       string
+	ID         string
 	Properties Properties
 	Attributes []*Attr
 	Relations  []*Relation
 
 	SubGraphs []Graph
 	Nodes     []*Node
+
+	Parent *Graph
+}
+
+func (g *GraphBase) Graph() *GraphBase {
+	return g
 }
 
 func (g *GraphBase) AddAttribute(a *Attr) {
 	g.Attributes = append(g.Attributes, a)
 }
 
-func (g *GraphBase) AddSubGraph(sub Graph) {
-	g.SubGraphs = append(g.SubGraphs, sub)
+func (g *GraphBase) AddSubGraph(sub GraphVizGraph) {
+	g.SubGraphs = append(g.SubGraphs, sub.Graph())
 }
 
 func (g *GraphBase) AddRelation(r *Relation) {
 	g.Relations = append(g.Relations, r)
 }
 
-func (g *GraphBase) AddNode(n *Node) {
+func (g *GraphBase) AddNode(gvn GraphVizNode) {
+	n := gvn.Node()
 	g.Nodes = append(g.Nodes, n)
+	for _, r := range n.Relations {
+		g.AddRelation(r)
+	}
 }
 
 func NewDigraph(name string) *GraphBase {
 	return NewGraph("digraph", name)
 }
 
-func NewSubGraph(name string) *GraphBase {
-	return NewGraph("subgraph", name)
+func NewClusterSubGraph(label string) *GraphBase {
+	g := NewSubGraph(label)
+	g.ID = fmt.Sprintf("clusterSub%p", g)
+	return g
 }
 
-func NewGraph(graphType string, name string) *GraphBase {
+func NewSubGraph(label string) *GraphBase {
+	n := newGraph("subgraph")
+	n.ID = fmt.Sprintf("sub%p", n)
+	n.Properties["label"] = label
+	return n
+}
+
+func newGraph(graphType string) *GraphBase {
 	g := GraphBase{}
 	g.Type = graphType
-	g.Name = name
 	g.Attributes = make([]*Attr, 0)
 	g.Relations = make([]*Relation, 0)
 	g.Properties = make(Properties)
@@ -77,12 +80,19 @@ func NewGraph(graphType string, name string) *GraphBase {
 	return &g
 }
 
+func NewGraph(graphType string, id string) *GraphBase {
+	g := newGraph(graphType)
+	g.ID = id
+
+	return g
+}
+
 func (g *GraphBase) GraphViz() string {
 	const graphTemplate = `
-{{.Type}} {{.Name}} {
+{{.Type}} {{.ID}} {
 {{ range $name, $val := .Properties}} {{$name}}="{{$val}}";
 {{end}}
-{{ range $i, $attr := .Attributes}} {{$attr.Name}} [{{range $n, $v := $attr.Properties}} {{$n}}={{$v}}{{end}} ]; {{end}}
+{{ range $i, $attr := .Attributes}} {{$attr.Name}} [{{range $n, $v := $attr.Properties}} {{$n}}="{{$v}}"{{end}} ]; {{end}}
 {{ range $i, $s := .SubGraphs}} {{ $s.GraphViz }}
 {{end}}
 {{ range $i, $n := .Nodes}} {{ $n.GraphViz }}

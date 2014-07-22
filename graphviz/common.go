@@ -33,7 +33,10 @@ func RenderTemplate(templateString string, i interface{}) string {
 	}
 
 	var doc bytes.Buffer
-	t.Execute(&doc, i)
+	err = t.Execute(&doc, i)
+	if err != nil {
+		fmt.Printf("ERROR: %v\n", err)
+	}
 
 	re := regexp.MustCompile("\n\n+")
 	return re.ReplaceAllLiteralString(doc.String(), "\n\n")
