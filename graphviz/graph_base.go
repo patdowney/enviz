@@ -7,7 +7,7 @@ type Relation struct {
 }
 
 func (r *Relation) GraphViz() string {
-	const graphTemplate = `{{.LeftID}} -> {{.RightID}} [{{ range $n, $v :=     .Properties}} {{$n}}="{{$v}}"{{end}}]`
+	const graphTemplate = `{{.LeftID}} -> {{.RightID}} [{{ range $n, $v :=     .Properties}} {{$n}}="{{$v}}"{{end}} ];`
 
 	return RenderTemplate(graphTemplate, r)
 }
@@ -80,10 +80,9 @@ func NewGraph(graphType string, name string) *GraphBase {
 func (g *GraphBase) GraphViz() string {
 	const graphTemplate = `
 {{.Type}} {{.Name}} {
-{{ range $name, $val := .Properties}} {{$name}}="{{$val}}"
+{{ range $name, $val := .Properties}} {{$name}}="{{$val}}";
 {{end}}
-{{ range $i, $attr := .Attributes}} {{$attr.Name}} [{{range $n, $v := $attr.Properties}} {{$n}}={{$v}}{{end}} ]
-{{end}}
+{{ range $i, $attr := .Attributes}} {{$attr.Name}} [{{range $n, $v := $attr.Properties}} {{$n}}={{$v}}{{end}} ]; {{end}}
 {{ range $i, $s := .SubGraphs}} {{ $s.GraphViz }}
 {{end}}
 {{ range $i, $n := .Nodes}} {{ $n.GraphViz }}

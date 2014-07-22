@@ -3,6 +3,7 @@ package graphviz
 import (
 	"bytes"
 	"fmt"
+	"regexp"
 	"text/template"
 )
 
@@ -33,5 +34,8 @@ func RenderTemplate(templateString string, i interface{}) string {
 
 	var doc bytes.Buffer
 	t.Execute(&doc, i)
-	return doc.String()
+
+	re := regexp.MustCompile("\n\n+")
+	return re.ReplaceAllLiteralString(doc.String(), "\n\n")
+
 }

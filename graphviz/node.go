@@ -6,7 +6,7 @@ type Node struct {
 }
 
 func (n *Node) GraphViz() string {
-	const graphTemplate = `{{.Name}} [{{ range $n, $v := .Properties}} {{$n}}="{{$v}}"{{end}}]`
+	const graphTemplate = `{{.Name}} [{{ range $n, $v := .Properties}} {{$n}}="{{$v}}"{{end}} ];`
 
 	return RenderTemplate(graphTemplate, n)
 }
