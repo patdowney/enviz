@@ -6,7 +6,7 @@
   {
     "Name": "service-a",
     "Port": 80,
-    "ServiceRefs": ["database", "logging"]
+    "DependencyRefs": ["database", "logging"]
   },
   {
     "Name": "logging",
@@ -15,6 +15,6 @@
   {
     "Name": "web",
     "Port": 443,
-    "ServiceRefs": ["service-a", "logging"]
+    "DependencyRefs": ["service-a", "logging"]
   }
 ]

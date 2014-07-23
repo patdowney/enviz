@@ -47,7 +47,7 @@ func DecodeServiceCatalogue(inputReader io.Reader) (*resources.ServiceCatalogue,
 	catalogue.AddServices(translatedServices)
 
 	for _, svc := range initialServices {
-		err := catalogue.AddServiceDependencies(svc.Name, svc.ServiceRefs)
+		err := catalogue.AddServiceDependencies(svc.Name, svc.DependencyRefs)
 		if err != nil {
 			return nil, err
 		}
