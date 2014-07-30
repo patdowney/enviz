@@ -1,34 +1,29 @@
 package resources
 
-type HostGroup struct {
-	Name  string
-	Hosts []*Host
-}
-
-func (g *HostGroup) AddHost(h *Host) *HostGroup {
-	g.Hosts = append(g.Hosts, h)
-	return g
-}
-
-func NewHostGroup(name string) *HostGroup {
-	g := HostGroup{
-		Name:  name,
-		Hosts: make([]*Host, 0)}
-
-	return &g
-}
-
 type Host struct {
 	HostName  string
 	DNSName   string
 	IPAddress string
 	Services  []*Service
+	State     string
 }
 
 func (h *Host) AddService(service *Service) *Host {
-	h.Services = append(h.Services, service)
+	svcInstance := NewService(service.Name, service.Port)
+	svcInstance.State = service.State
+	h.Services = append(h.Services, svcInstance)
 
 	return h
+}
+
+func (h *Host) FindService(name string) *Service {
+	for _, s := range h.Services {
+		if s.Name == name {
+			return s
+		}
+	}
+
+	return nil
 }
 
 func NewHost(hostname string) *Host {

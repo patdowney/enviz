@@ -3,14 +3,19 @@
 		"HostName": "db-1",
 		"DNSName": "db.internal",
 		"IPAddress": "192.168.0.1",
-		"ServicesRefs": [ "database", "logging" ]
+		"ServiceRefs": [ "database" ]
 	},
 	{
 		"HostName": "web-1",
-		"ServicesRefs": [ "web" ]
+		"ServiceRefs": [ "web" ]
 	},
 	{
 		"HostName": "svc-1",
-		"ServicesRefs": [ "service-a" ]
+		"ServiceRefs": [ "service-a" ]
+	},
+	{
+		"HostName": "logging-1",
+		"State": "pending",
+		"ServiceRefs": [ "logging" ]
 	}
 ]

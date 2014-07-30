@@ -1,7 +1,9 @@
 [
   {
     "Name": "database",
-    "Port": 5432
+    "Port": 5432,
+    "DependencyRefs": ["logging"],
+    "State": "Pending"
   },
   {
     "Name": "service-a",

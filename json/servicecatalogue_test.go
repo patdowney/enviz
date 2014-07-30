@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseServiceCatalogue(t *testing.T) {
-	input := "[ { \"Name\": \"database\", \"Port\": 5432 }, { \"Name\": \"service-a\", \"    Port\": 80, \"ServiceRefs\": [\"database\"] } ]"
+	input := "[ { \"Name\": \"database\", \"Port\": 5432 }, { \"Name\": \"service-a\", \"    Port\": 80, \"DependencyRefs\": [\"database\"] } ]"
 
 	inputReader := strings.NewReader(input)
 
@@ -25,9 +25,9 @@ func TestParseServiceCatalogue(t *testing.T) {
 
 func TestTranslateServices(t *testing.T) {
 	input := []*Service{&Service{
-		Name:        "database",
-		Port:        1234,
-		ServiceRefs: []string{"storage"}}}
+		Name:           "database",
+		Port:           1234,
+		DependencyRefs: []string{"storage"}}}
 
 	output := TranslateServices(input)
 
@@ -38,7 +38,7 @@ func TestTranslateServices(t *testing.T) {
 }
 
 func TestDecodeServiceCatalogue(t *testing.T) {
-	input := "[ { \"Name\": \"database\", \"Port\": 5432 }, { \"Name\": \"service-a\", \"    Port\": 80, \"ServiceRefs\": [\"database\"] } ]"
+	input := "[ { \"Name\": \"database\", \"Port\": 5432 }, { \"Name\": \"service-a\", \"    Port\": 80, \"DependencyRefs\": [\"database\"] } ]"
 
 	inputReader := strings.NewReader(input)
 

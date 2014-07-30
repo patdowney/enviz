@@ -15,7 +15,9 @@ func TranslateServices(services []*Service) []*resources.Service {
 	serviceDefs := make([]*resources.Service, 0)
 
 	for _, svc := range services {
-		serviceDefs = append(serviceDefs, resources.NewService(svc.Name, svc.Port))
+		s := resources.NewService(svc.Name, svc.Port)
+		s.State = svc.State
+		serviceDefs = append(serviceDefs, s)
 	}
 
 	return serviceDefs

@@ -4,6 +4,7 @@ type Service struct {
 	Name         string
 	Port         int
 	Dependencies []*Service
+	State        string
 }
 
 func (s *Service) AddDependency(service *Service) {
