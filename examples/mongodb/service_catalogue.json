@@ -1,0 +1,86 @@
+[
+  {
+    "Name": "syslogd",
+    "DependencyRefs": [
+      "logstash/syslog-tcp"
+    ]
+  },
+  {
+    "Name": "logstash",
+    "DependencyRefs": [
+      "aws/elasticsearch"
+    ]
+  },
+  {
+    "Name": "logstash/syslog-tcp",
+    "Port": 514,
+    "DependencyRefs": [
+      "logstash"
+    ]
+  },
+  {
+    "Name": "logstash/json-tcp",
+    "Port": 5515,
+    "DependencyRefs": [
+      "logstash"
+    ]
+  },
+  {
+    "Name": "aws/cloudwatch",
+    "Port": 443
+  },
+  {
+    "Name": "aws/elasticsearch",
+    "Port": 443
+  },
+  {
+    "Name": "grafana",
+    "Port": 80,
+    "DependencyRefs": [
+      "aws/elasticsearch",
+      "prometheus",
+      "graphite/web"
+    ]
+  },
+  {
+    "Name": "prometheus",
+    "Port": 80,
+    "DependencyRefs": [
+      "prom/node_exporter",
+      "prom/mongodb_exporter",
+      "aws/cloudwatch"
+    ]
+  },
+  {
+    "Name": "graphite/web",
+    "Port": 80
+  },
+  {
+    "Name": "graphite/carbon-cache",
+    "Port": 2003
+  },
+  {
+    "Name": "collectd/mongodb",
+    "DependencyRefs": [
+      "graphite/carbon-cache"
+    ]
+  },
+  {
+    "Name": "collectd",
+    "DependencyRefs": [
+      "graphite/carbon-cache"
+    ]
+  },
+  {
+    "Name": "prom/mongodb_exporter",
+    "Port": 9104
+  },
+  {
+    "Name": "prom/node_exporter",
+    "Port": 9100
+  },
+  {
+    "Name": "mongodb/mongod",
+    "Port": 27017
+  }
+]

@@ -55,16 +55,21 @@ func (c *HostCatalogue) FindServiceConnections(host *Host) []*ServiceConnection 
 		//    for each service dependency
 		for _, serviceDep := range hostServiceDependencies {
 			//    find hosts with services
-			serviceHosts := c.FindHostsWithService(serviceDep.Name)
+			serviceHosts := host.PrimaryUpstreamHosts
+			if len(host.PrimaryUpstreamHosts) == 0 {
+				serviceHosts = c.FindHostsWithService(serviceDep.Name)
+			}
 
 			for _, targetHost := range serviceHosts {
 				targetService := targetHost.FindService(serviceDep.Name)
-				c := &ServiceConnection{
-					SourceHost:    host,
-					SourceService: hostService,
-					TargetHost:    targetHost,
-					TargetService: targetService}
-				connections = append(connections, c)
+				if targetService != nil {
+					c := &ServiceConnection{
+						SourceHost:    host,
+						SourceService: hostService,
+						TargetHost:    targetHost,
+						TargetService: targetService}
+					connections = append(connections, c)
+				}
 			}
 		}
 	}

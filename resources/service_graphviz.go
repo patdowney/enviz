@@ -32,6 +32,7 @@ func (s *Service) Node() *graphviz.Node {
 
 	n.Properties["shape"] = "Mrecord"
 	n.Properties["style"] = s.nodeStyle()
+	n.Properties["height"] = "0.25"
 
 	for _, d := range s.Dependencies {
 		n.AddRelation(d.Node())

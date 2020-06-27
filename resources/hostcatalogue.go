@@ -10,6 +10,25 @@ type HostCatalogue struct {
 	ServiceCatalogue *ServiceCatalogue
 }
 
+func (c *HostCatalogue) AddUpstreamHosts(hostName string, primary []string, secondary []string) error {
+	h := c.FindHost(hostName)
+	if h != nil {
+		for _, p := range primary {
+			ph, exists := c.hostIndex[p]
+			if exists {
+				h.AddPrimaryUpstreamHost(ph)
+			}
+		}
+		for _, s := range secondary {
+			sh, exists := c.hostIndex[s]
+			if exists {
+				h.AddSecondaryUpstreamHost(sh)
+			}
+		}
+	}
+	return nil
+}
+
 func (c *HostCatalogue) AddHostServices(hostName string, serviceRefs []string) error {
 	h := c.FindHost(hostName)
 	if h != nil {

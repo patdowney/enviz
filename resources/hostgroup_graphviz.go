@@ -8,5 +8,9 @@ func (g *HostGroup) Graph() *graphviz.GraphBase {
 		subGraph.AddSubGraph(s)
 	}
 
+	for _, g := range g.HostGroups {
+		subGraph.AddSubGraph(g)
+	}
+
 	return subGraph
 }

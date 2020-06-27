@@ -57,6 +57,12 @@ func DecodeHostCatalogue(inputReader io.Reader, serviceCatalogue *resources.Serv
 			return nil, err
 
 		}
+
+		err = catalogue.AddUpstreamHosts(h.HostName, h.PrimaryUpstreamHosts, h.SecondaryUpstreamHosts)
+		if err != nil {
+			return nil, err
+
+		}
 	}
 
 	return catalogue, nil

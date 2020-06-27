@@ -1,0 +1,71 @@
+[
+  {
+    "HostName": "logstash.us-east-1a.i.example.net",
+    "ServiceRefs": [
+      "prom/node_exporter",
+      "collectd",
+      "syslogd",
+      "logstash",
+      "logstash/syslog-tcp",
+      "logstash/json-tcp"
+    ],
+    "NetworkRef": "us-east-1a"
+  },
+  {
+    "HostName": "prometheus.us-east-1a.i.example.net",
+    "ServiceRefs": [
+      "prometheus",
+      "prom/node_exporter",
+      "syslogd"
+    ],
+    "NetworkRef": "us-east-1a"
+  },
+  {
+    "HostName": "grafana.us-east-1a.i.example.net",
+    "ServiceRefs": [
+      "grafana"
+    ],
+    "NetworkRef": "us-east-1a"
+  },
+  {
+    "HostName": "graphite.us-east-1a.i.example.net",
+    "ServiceRefs": [
+      "graphite/web",
+      "graphite/carbon-cache",
+      "syslogd"
+    ],
+    "NetworkRef": "us-east-1a"
+  },
+  {
+    "HostName": "search-????.amazonaws.com",
+    "ServiceRefs": [
+      "aws/elasticsearch"
+    ],
+    "NetworkRef": "AmazonAWS"
+  },
+  {
+    "HostName": "monitoring.us-east-1.amazonaws.com",
+    "ServiceRefs": [
+      "aws/cloudwatch"
+    ],
+    "NetworkRef": "AmazonAWS"
+  },
+  {
+    "HostName": "jepsen-control.us-east-1a.i.example.net",
+    "ServiceRefs": [
+      "syslogd",
+      "prom/node_exporter",
+      "collectd"
+    ],
+    "NetworkRef": "us-east-1a"
+  },
+  {
+    "HostName": "activemq-red-0[01].us-east-1b.i.example.net",
+    "ServiceRefs": [
+      "syslogd",
+      "prom/node_exporter",
+      "collectd/activemq"
+    ],
+    "NetworkRef": "us-east-1b"
+  }
+]
